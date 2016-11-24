@@ -2,8 +2,7 @@ var express = require("express");
 var app = express();
 
 app.use(function(req, res, next){
-	if(req.headers["x-forwarded-proto"] === "https"){
-		console.log("http://"+req.hostname+req.url)
+	if(req.headers["x-forwarded-proto"] === "https"){		
 		res.redirect("http://"+req.hostname+req.url);
 	}else{		
 		next();
@@ -12,9 +11,6 @@ app.use(function(req, res, next){
 
 app.use(express.static("public"));
 
-app.get("/", function(request, response){
-	response.send("Hello from the server!");
-});
 
 app.set("port", process.env.PORT||5000);
 
