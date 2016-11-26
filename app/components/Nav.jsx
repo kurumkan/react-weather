@@ -2,9 +2,26 @@ var React = require("react");
 var {Link, IndexLink} = require("react-router");
 
 module.exports = React.createClass({
+	getInitialState: function(){
+		return {
+			location: ""
+		};
+	},
+
 	onSearch: function(e){
 		e.preventDefault();
-		alert("submitted!");
+		var {location} = this.state;		
+		location = encodeURIComponent(location);
+
+		if(location.length>0){
+			this.setState({location: ""});			
+			window.location.hash="#/?location="+location;
+		}		
+	},
+
+	handleChange: function(e){
+		console.log(e.target.value)
+		this.setState({location: e.target.value});		
 	},
 
 	render: function(){
@@ -30,10 +47,10 @@ module.exports = React.createClass({
 					<form onSubmit={this.onSearch}>
 						<ul className="menu">
 							<li>
-								<input type="search" placeholder="Enter city name" />
+								<input type="search" placeholder="Enter city name" onChange={this.handleChange} value={this.state.location} />
 							</li>
 							<li>
-								<button type="button" className="button">Go</button>
+								<button className="button">Go</button>
 							</li>
 						</ul>					
 						

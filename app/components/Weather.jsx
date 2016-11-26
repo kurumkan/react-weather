@@ -13,26 +13,47 @@ var Weather = React.createClass({
 		};	
 	},
 
+	componentWillReceiveProps: function(nextProps){
+		var location = nextProps.location.query.location;
+
+		if(location&&location.length>0){
+			this.handleSearch(location);
+			window.location.hash="#/";
+		}
+	},
+
 	handleSearch: function(location){
-		this.setState({
-			isLoading: true			
-		});
 		var _this = this;
-		
-		openWeatherMap.getTemp(location).then(function(temp){			
-			_this.setState({
-				location: location,
-				temp: temp,
-				isLoading: false
-			});			
-			console.log("SUCCESS", temp)
-		}, function(error){	
-			console.log("error", error.message)	
-			_this.setState({
-				isLoading: false,
-				errorMessage: error.message
-			});					
+		this.setState({
+			isLoading: true,
+			errorMessage: null,
+			location: null,
+			temp: null			
+		}, function(){
+			openWeatherMap.getTemp(location).then(function(temp){			
+				_this.setState({
+					isLoading: false,
+					location: location,
+					temp: temp				
+				});			
+				console.log("SUCCESS", temp)
+			}, function(error){	
+				console.log("error", error.message)	
+				_this.setState({
+					isLoading: false,
+					errorMessage: error.message
+				});					
+			});
 		});
+	},
+
+	componentDidMount: function(){
+		var location = this.props.location.query.location;
+
+		if(location&&location.length>0){
+			this.handleSearch(location);
+			window.location.hash="#/";
+		}
 	},
 
 	render: function(){		
