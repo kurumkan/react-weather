@@ -6,15 +6,15 @@ module.exports = {
 	getTemp: function(location){
 		var requestUrl = OPEN_WEATHER_MAP_URL+"&q="+encodeURIComponent(location);		
 
-		return axios.get(requestUrl).then(function(response){
-			if(response.data.cod && response.data.message){
+		return axios.get(requestUrl).then(function(response){			
+			if(response.data.cod && response.data.message){				
 				throw new Error(response.data.message);
-			}else{
+			}else{				
 				return response.data.main.temp;
 			}
-
-		}, function(error){
-			throw new Error(error.data.message);
+		}, function(error){			
+			throw new Error(error.message);
 		});
 	}	
 }
+
